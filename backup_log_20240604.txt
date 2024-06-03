@@ -1,0 +1,12 @@
+Tue 04 Jun 2024 10:30:32 NZST: Error: Directory /path/to/create_users_from_csv.sh not found.
+Tue 04 Jun 2024 10:30:47 NZST: Error: Directory /path/to/scripts not found.
+Tue 04 Jun 2024 10:32:16 NZST: Error: Directory /create_users_from_csv.sh not found.
+Tue 04 Jun 2024 10:32:35 NZST: Error: Directory /users_csv not found.
+Tue 04 Jun 2024 10:34:03 NZST: Error: Directory /Desktop/scripts/create_users_from_csv.sh not found.
+Tue 04 Jun 2024 10:35:37 NZST: Error: Directory /Desktop/scripts/create_users_from_csv.sh not found.
+Tue 04 Jun 2024 10:35:50 NZST: Error: Directory /path/to/directory not found.
+Tue 04 Jun 2024 10:36:10 NZST: Error: Directory /users_csv not found.
+Tue 04 Jun 2024 10:37:00 NZST: Error: Directory create_users_from_csv.sh not found.
+Tue 04 Jun 2024 10:37:59 NZST: Error: Directory Downloads not found.
+Tue 04 Jun 2024 10:38:58 NZST: Error: Directory ~/Downloads not found.
+Tue 04 Jun 2024 10:39:43 NZST: Error: Directory C:UsersmitchellmDownloads not found.

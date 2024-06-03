@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# Log file
+log_file="user_setup.log"
+
+# Function to log messages
+log_message() {
+    local message=$1
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $message" | tee -a "$log_file"
+}
+
+# Function to create a new user
+create_user() {
+    local username=$1
+    local password=$2
+    if id "$username" &>/dev/null; then
+        log_message "User $username already exists. Skipping."
+    else
+        sudo useradd -m -s /bin/bash "$username"
+        echo "$username:$password" | sudo chpasswd
+        sudo chage -d 0 "$username"  # Force password change on first login
+        log_message "Created user: $username with password: $password"
+    fi
+}
+
+# Function to add user to groups
+add_user_to_groups() {
+    local username=$1
+    local groups=$2
+    IFS=',' read -ra ADDR <<< "$groups"
+    for group in "${ADDR[@]}"; do
+        sudo groupadd -f "$group"
+        sudo usermod -aG "$group" "$username"
+        log_message "Added $username to group: $group"
+    done
+}
+
+# Function to create a shared folder and link it to the user's home directory
+create_shared_folder() {
+    local username=$1
+    local folder=$2
+    if [[ -n "$folder" ]]; then
+        sudo mkdir -p "$folder"
+        sudo chown root:"$username" "$folder"
+        sudo chmod 770 "$folder"
+        sudo ln -s "$folder" "/home/$username/shared"
+        log_message "Created shared folder: $folder and linked it to /home/$username/shared"
+    fi
+}
+
+# Function to process the CSV file
+process_csv() {
+    local csv_file=$1
+
+    if [[ ! -f "$csv_file" ]]; then
+        log_message "CSV file $csv_file does not exist. Exiting."
+        exit 1
+    fi
+
+    while IFS=';' read -r email birthdate groups sharedFolder; do
+        # Skip the header
+        [[ "$email" == "e-mail" ]] && continue
+        
+        username=$(echo "$email" | cut -d '@' -f 1 | sed 's/\./_/g')
+        password=$(date -d "$birthdate" '+%m%Y')
+        
+        create_user "$username" "$password"
+        add_user_to_groups "$username" "$groups"
+        create_shared_folder "$username" "$sharedFolder"
+        
+        log_message "Processed user: $username"
+    done < "$csv_file"
+}
+
+# Main script logic
+csv_file="users.csv"
+process_csv "$csv_file"
+log_message "User setup complete."
+
