@@ -19,14 +19,16 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./BSA_Self_Assessment  # Update this path as needed
 
       - name: Build application
         run: npm run build
+        working-directory: ./BSA_Self_Assessment  # Update this path as needed
 
       - name: Deploy to Server
         env:
-          SERVER_USERNAME: ${{ secrets.REMOTE_USER }}      # User to log in to server
-          SERVER_IP: ${{ secrets.REMOTE_HOST }}            # IP address of server
+          SERVER_USERNAME: ${{ secrets.REMOTE_USER }}
+          SERVER_IP: ${{ secrets.REMOTE_HOST }}
           PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          scp -i $PRIVATE_KEY -r ./build $SERVER_USERNAME@$SERVER_IP:/path/to/deploy
+          scp -i $PRIVATE_KEY -r ./BSA_Self_Assessment/build $SERVER_USERNAME@$SERVER_IP:/path/to/deploy
