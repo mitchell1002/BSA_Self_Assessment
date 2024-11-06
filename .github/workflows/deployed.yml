@@ -25,8 +25,8 @@ jobs:
 
       - name: Deploy to Server
         env:
-          SERVER_USERNAME: ${{ secrets.REMOTE_HOST }}
-          SERVER_IP: ${{ secrets.REMOTE_USER }}
+          SERVER_USERNAME: ${{ secrets.REMOTE_USER }}      # User to log in to server
+          SERVER_IP: ${{ secrets.REMOTE_HOST }}            # IP address of server
           PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           scp -i $PRIVATE_KEY -r ./build $SERVER_USERNAME@$SERVER_IP:/path/to/deploy
